@@ -88,6 +88,12 @@ create table assessments (
   mo5_pematuhan_budaya_kerja_score      smallint check (mo5_pematuhan_budaya_kerja_score      between 1 and 4),
   mo5_pematuhan_budaya_kerja_comment    text,
 
+  -- ── Evidence Checklist ─────────────────────────────────────
+  -- Stores only the items that were ticked, as a readable array.
+  -- Example: {"Skill Matrix (Terkini)","Rekod Kehadiran (3 Bulan Terakhir)"}
+  -- Empty array [] means no documents were submitted.
+  evidence_checklist  text[]  not null  default '{}',
+
   -- ── Result ──────────────────────────────────────────────────
   weighted_score  numeric(5, 2),   -- e.g. 87.50
   recommendation  text,

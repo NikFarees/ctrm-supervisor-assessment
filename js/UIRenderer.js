@@ -15,6 +15,21 @@ class UIRenderer {
     container.innerHTML = this._data.sections.map((s) => this._sectionHTML(s)).join("");
   }
 
+  /** Render evidence checklist checkboxes into #evidenceChecklist. */
+  renderChecklist() {
+    const container = document.getElementById("evidenceChecklist");
+    if (!container) return;
+    container.innerHTML = this._data.evidenceChecklist
+      .map(
+        (label, i) => `
+        <label class="checklist__item">
+          <input type="checkbox" id="check-${i}" class="checklist__checkbox" />
+          <span>${label}</span>
+        </label>`
+      )
+      .join("");
+  }
+
   renderRecommendations() {
     const container = document.getElementById("recommendationList");
     if (!container) return;
@@ -47,11 +62,9 @@ class UIRenderer {
       summaryWeightedEl.className =
         "kpi__value" +
         (weighted.ready
-          ? weighted.score >= 75
-            ? " kpi__value--high"
-            : weighted.score >= 50
-            ? " kpi__value--mid"
-            : " kpi__value--low"
+          ? weighted.score >= 75 ? " kpi__value--high"
+          : weighted.score >= 50 ? " kpi__value--mid"
+          : " kpi__value--low"
           : "");
     }
 
@@ -95,7 +108,6 @@ class UIRenderer {
                 <th>Kriteria Penilaian</th>
                 <th class="col-score">Skor</th>
                 <th class="col-comment">Komen &amp; Catatan Penyelia</th>
-                <th class="col-evidence">Dokumen Bukti</th>
               </tr>
             </thead>
             <tbody>
@@ -129,19 +141,7 @@ class UIRenderer {
             placeholder="Komen ringkas penyelia (tidak wajib)"
             oninput="app.onFieldChange()"></textarea>
         </td>
-        <td class="col-evidence">
-          <span class="evidence-tag">${item[2]}</span>
-        </td>
       </tr>`;
-  }
-
-  /**
-   * Called whenever a score changes — updates the print-only score badge
-   * so the printed page shows the selected score label clearly.
-   */
-  updatePrintScore(itemKey, score, label) {
-    const el = document.getElementById(`print-score-${itemKey}`);
-    if (el) el.textContent = score ? `${score} — ${label}` : "";
   }
 
   _setText(id, text) {

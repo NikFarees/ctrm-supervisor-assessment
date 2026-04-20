@@ -18,6 +18,7 @@ class AssessmentForm {
     if (totalEl) totalEl.textContent = this._data.totalItems;
 
     this._renderer.renderSections();
+    this._renderer.renderChecklist();
     this._renderer.renderRecommendations();
 
     document.querySelectorAll('input[name="recommendation"]').forEach((radio, i) => {
@@ -103,18 +104,25 @@ class AssessmentForm {
     });
   }
 
-  /** Collect all form values into a plain object (for draft save/load). */
+  /** Collect all form values into a plain object (used for draft save/load). */
   _collectData() {
     const scores   = {};
     const comments = {};
 
     this._data.sections.forEach((section) => {
       section.items.forEach((_, i) => {
-        const k      = ScoreManager.itemKey(section.id, i);
-        scores[k]    = this._score.getScore(k);
-        const el     = document.getElementById(`comment-${k}`);
-        comments[k]  = el ? el.value : "";
+        const k     = ScoreManager.itemKey(section.id, i);
+        scores[k]   = this._score.getScore(k);
+        const el    = document.getElementById(`comment-${k}`);
+        comments[k] = el ? el.value : "";
       });
+    });
+
+    // Collect checklist as { label: boolean }
+    const checklist = {};
+    this._data.evidenceChecklist.forEach((label, i) => {
+      const el = document.getElementById(`check-${i}`);
+      checklist[label] = el ? el.checked : false;
     });
 
     const selectedRec = document.querySelector('input[name="recommendation"]:checked');
@@ -127,6 +135,7 @@ class AssessmentForm {
       assessmentDate: document.getElementById("assessmentDate")?.value  ?? "",
       scores,
       comments,
+      checklist,
       recommendation: selectedRec ? selectedRec.value : "",
       remarks:        document.getElementById("remarks")?.value         ?? "",
     };
@@ -134,7 +143,8 @@ class AssessmentForm {
 
   /**
    * Build the flat Supabase payload.
-   * Every score and comment gets its own column — no JSON blobs.
+   * - Each score/comment → its own column
+   * - Evidence checklist → text[] containing only the checked item labels
    */
   _buildFlatPayload(data, weightedScore) {
     const payload = {
@@ -148,6 +158,7 @@ class AssessmentForm {
       remarks:         data.remarks || null,
     };
 
+    // Score + comment columns
     this._data.sections.forEach((section) => {
       section.items.forEach((item, i) => {
         const domKey = ScoreManager.itemKey(section.id, i);
@@ -157,10 +168,16 @@ class AssessmentForm {
       });
     });
 
+    // Evidence checklist → array of checked labels only (readable in DB)
+    // e.g. ["Skill Matrix (Terkini)", "Rekod Kehadiran (3 Bulan Terakhir)"]
+    payload.evidence_checklist = Object.entries(data.checklist)
+      .filter(([, checked]) => checked)
+      .map(([label]) => label);
+
     return payload;
   }
 
-  /** Restore a previously saved draft into the form. */
+  /** Restore a saved draft into the form. */
   _applyData(data) {
     if (!data) return;
 
@@ -191,6 +208,13 @@ class AssessmentForm {
       Object.entries(data.comments).forEach(([itemKey, comment]) => {
         const el = document.getElementById(`comment-${itemKey}`);
         if (el) el.value = comment ?? "";
+      });
+    }
+
+    if (data.checklist) {
+      this._data.evidenceChecklist.forEach((label, i) => {
+        const el = document.getElementById(`check-${i}`);
+        if (el) el.checked = Boolean(data.checklist[label]);
       });
     }
 

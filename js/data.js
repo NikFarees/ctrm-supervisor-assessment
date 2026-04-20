@@ -70,6 +70,15 @@ const AssessmentData = Object.freeze({
     },
   ],
 
+  // Plain string labels — only the checked ones are saved to the DB as an array
+  evidenceChecklist: [
+    "Skill Matrix (Terkini)",
+    "Rekod Kehadiran (3 Bulan Terakhir)",
+    "Borang Kaizen atau Rekod Penambahbaikan (Jika ada)",
+    "Laporan Kualiti / Output (Individu)",
+    "Rekod Latihan / OJT Sign-off",
+  ],
+
   recommendations: [
     "LAYAK: Calon menunjukkan kompetensi tinggi dan layak diiktiraf.",
     "LAYAK DENGAN PEMANTAUAN: Calon layak tetapi memerlukan bimbingan dalam aspek tertentu.",

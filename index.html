@@ -111,14 +111,22 @@
     <!-- Assessment Sections (rendered by UIRenderer) -->
     <div id="sectionsContainer"></div>
 
-    <!-- Recommendation -->
-    <section class="card">
-      <h2>Rekomendasi</h2>
-      <p class="muted no-print">Sila pilih satu keputusan penilaian.</p>
-      <div class="radio-list" id="recommendationList"></div>
-      <label class="small remarks-label" for="remarks">Catatan Tambahan Penyelia / Assessor</label>
-      <textarea id="remarks" placeholder="Catatan tambahan (tidak wajib)"></textarea>
-    </section>
+    <!-- Evidence Checklist + Recommendation -->
+    <div class="grid-2">
+      <div class="card">
+        <h2>Senarai Semak Eviden</h2>
+        <p class="muted">Tandakan dokumen yang telah disediakan oleh calon.</p>
+        <div class="checklist" id="evidenceChecklist"></div>
+      </div>
+
+      <div class="card">
+        <h2>Rekomendasi</h2>
+        <p class="muted no-print">Sila pilih satu keputusan penilaian.</p>
+        <div class="radio-list" id="recommendationList"></div>
+        <label class="small remarks-label" for="remarks">Catatan Tambahan Penyelia / Assessor</label>
+        <textarea id="remarks" placeholder="Catatan tambahan (tidak wajib)"></textarea>
+      </div>
+    </div>
 
     <!-- Assessment Summary -->
     <section class="card">
