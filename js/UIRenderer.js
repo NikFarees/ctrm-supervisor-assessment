@@ -29,11 +29,11 @@ class UIRenderer {
     if (!container) return;
     container.innerHTML = this._data.evidenceChecklist
       .map(
-        (item, i) => `
+        ([label, colKey], i) => `
         <label class="checklist__item">
-          <input type="checkbox" id="check-${i}" class="checklist__checkbox" />
+          <input type="checkbox" id="check-${i}" data-col="${colKey}" class="checklist__checkbox" />
           <span class="checklist__check-icon"></span>
-          <span>${item}</span>
+          <span>${label}</span>
         </label>`
       )
       .join("");

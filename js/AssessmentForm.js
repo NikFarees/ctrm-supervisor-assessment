@@ -95,21 +95,9 @@ class AssessmentForm {
 
     this._toast.show("⏳ Menghantar data ke pangkalan data...", "loading", 30000);
 
-    const data = this._collectData();
+    const data     = this._collectData();
     const weighted = this._score.calculateWeightedScore();
-
-    const payload = {
-      candidate_name:    data.candidateName,
-      employee_no:       data.employeeNo,
-      department:        data.department,
-      supervisor_name:   data.supervisorName,
-      assessment_date:   data.assessmentDate,
-      weighted_score:    weighted.score,
-      recommendation:    data.recommendation,
-      remarks:           data.remarks,
-      scores:            data.scores,
-      evidence_checklist: data.evidenceChecklist,
-    };
+    const payload  = this._buildFlatPayload(data, weighted.score);
 
     const result = await this._db.submitAssessment(payload);
 
@@ -136,7 +124,7 @@ class AssessmentForm {
     });
   }
 
-  /** Gather all form values into a plain serialisable object. */
+  /** Gather all form values into a plain serialisable object (used for draft save/load). */
   _collectData() {
     const scores   = {};
     const comments = {};
@@ -151,9 +139,9 @@ class AssessmentForm {
     });
 
     const evidenceChecklist = {};
-    this._data.evidenceChecklist.forEach((item, i) => {
+    this._data.evidenceChecklist.forEach(([, colKey], i) => {
       const el = document.getElementById(`check-${i}`);
-      evidenceChecklist[item] = el ? el.checked : false;
+      evidenceChecklist[colKey] = el ? el.checked : false;
     });
 
     const selectedRec = document.querySelector('input[name="recommendation"]:checked');
@@ -170,6 +158,44 @@ class AssessmentForm {
       recommendation:   selectedRec ? selectedRec.value : "",
       remarks:          document.getElementById("remarks")?.value ?? "",
     };
+  }
+
+  /**
+   * Build a flat database payload — one proper column per score, comment,
+   * and evidence checkbox instead of JSON blobs.
+   * Column names match the Supabase table definition exactly.
+   */
+  _buildFlatPayload(data, weightedScore) {
+    const payload = {
+      // ── Candidate info ──────────────────────────────────────
+      candidate_name:   data.candidateName,
+      employee_no:      data.employeeNo,
+      department:       data.department,
+      supervisor_name:  data.supervisorName,
+      assessment_date:  data.assessmentDate,
+
+      // ── Result ──────────────────────────────────────────────
+      weighted_score: weightedScore,
+      recommendation: data.recommendation,
+      remarks:        data.remarks,
+    };
+
+    // ── Score + comment columns (one pair per criteria) ───────
+    this._data.sections.forEach((section) => {
+      section.items.forEach((item, i) => {
+        const domKey   = ScoreManager.itemKey(section.id, i);
+        const colKey   = item[3]; // e.g. "f01_adaptasi_tugasan"
+        payload[`${colKey}_score`]   = data.scores[domKey]   || null;
+        payload[`${colKey}_comment`] = data.comments[domKey] || null;
+      });
+    });
+
+    // ── Evidence checklist columns ────────────────────────────
+    this._data.evidenceChecklist.forEach(([, colKey]) => {
+      payload[colKey] = data.evidenceChecklist[colKey] ?? false;
+    });
+
+    return payload;
   }
 
   /** Populate the form from a previously saved data object. */
@@ -207,9 +233,9 @@ class AssessmentForm {
     }
 
     if (data.evidenceChecklist) {
-      this._data.evidenceChecklist.forEach((item, i) => {
+      this._data.evidenceChecklist.forEach(([, colKey], i) => {
         const el = document.getElementById(`check-${i}`);
-        if (el) el.checked = Boolean(data.evidenceChecklist[item]);
+        if (el) el.checked = Boolean(data.evidenceChecklist[colKey]);
       });
     }
 
