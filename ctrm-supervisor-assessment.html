@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CTRM Supervisor Assessment - FLEXTIVITY NFE</title>
+  <style>
+    :root {
+      --navy: #0f172a;
+      --blue: #1d4ed8;
+      --light-blue: #dbeafe;
+      --slate: #475569;
+      --line: #cbd5e1;
+      --bg: #f8fafc;
+      --white: #ffffff;
+      --green: #dcfce7;
+      --yellow: #fef3c7;
+      --red: #fee2e2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--navy);
+      line-height: 1.45;
+    }
+
+    .page {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #0f172a, #1e3a8a);
+      color: white;
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 16px 35px rgba(15, 23, 42, 0.18);
+      margin-bottom: 20px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 250px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.15);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 12px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 30px;
+      letter-spacing: -0.4px;
+    }
+
+    h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+
+    h3 {
+      margin: 0;
+      font-size: 17px;
+    }
+
+    .hero p {
+      color: #dbeafe;
+      margin: 10px 0 0;
+    }
+
+    .summary-box {
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 18px;
+      padding: 18px;
+    }
+
+    .summary-box .big {
+      font-size: 32px;
+      font-weight: bold;
+      margin-top: 4px;
+    }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05);
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 16px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 14px;
+      margin-bottom: 14px;
+    }
+
+    .weight {
+      background: var(--light-blue);
+      color: #1e40af;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: bold;
+      white-space: nowrap;
+    }
+
+    .grid-5 {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    label.small {
+      display: block;
+      font-size: 12px;
+      color: var(--slate);
+      font-weight: bold;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px 12px;
+      font-size: 14px;
+      background: white;
+      color: var(--navy);
+    }
+
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .criteria-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+
+    .criteria-table th {
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: 13px;
+      text-align: left;
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .criteria-table td {
+      padding: 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      font-size: 13px;
+    }
+
+    .criteria-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .no-col {
+      width: 50px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .score-col {
+      width: 210px;
+    }
+
+    .comment-col {
+      width: 240px;
+    }
+
+    .evidence-col {
+      width: 240px;
+      color: var(--slate);
+    }
+
+    .score-options {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+    }
+
+    .score-option {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 7px 4px;
+      text-align: center;
+      cursor: pointer;
+      font-weight: bold;
+      background: white;
+      user-select: none;
+    }
+
+    .score-option input {
+      display: none;
+    }
+
+    .score-option.selected {
+      background: var(--blue);
+      color: white;
+      border-color: var(--blue);
+    }
+
+    .score-caption {
+      font-size: 11px;
+      color: var(--slate);
+      margin-top: 6px;
+    }
+
+    .checklist label,
+    .radio-list label {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 11px;
+      margin-bottom: 9px;
+      cursor: pointer;
+      font-size: 14px;
+      background: white;
+    }
+
+    .radio-list label.selected {
+      border-color: var(--blue);
+      background: #eff6ff;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .kpi {
+      background: #f1f5f9;
+      border-radius: 16px;
+      padding: 14px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .kpi .label {
+      font-size: 12px;
+      color: var(--slate);
+      margin-bottom: 4px;
+    }
+
+    .kpi .value {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .actions {
+      position: sticky;
+      bottom: 0;
+      z-index: 20;
+      background: rgba(248, 250, 252, 0.92);
+      backdrop-filter: blur(8px);
+      border-top: 1px solid var(--line);
+      padding: 14px 0;
+      margin-top: 10px;
+    }
+
+    .actions-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 15px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .btn-primary {
+      background: var(--blue);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: #e2e8f0;
+      color: var(--navy);
+    }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .btn-success {
+      background: #16a34a;
+      color: white;
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      right: 24px;
+      z-index: 9999;
+      padding: 14px 20px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: bold;
+      color: white;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+      display: none;
+      max-width: 340px;
+    }
+
+    .toast.success {
+      background: #16a34a;
+    }
+
+    .toast.error {
+      background: #dc2626;
+    }
+
+    .toast.loading {
+      background: #1d4ed8;
+    }
+
+    .note {
+      background: var(--yellow);
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 12px;
+      color: #92400e;
+      font-size: 14px;
+      margin-top: 14px;
+    }
+
+    .signature-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      margin-top: 42px;
+    }
+
+    .signature-line {
+      border-top: 1px solid var(--slate);
+      padding-top: 8px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .muted {
+      color: var(--slate);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+
+      .hero-grid,
+      .grid-5,
+      .grid-2,
+      .kpi-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .criteria-table,
+      .criteria-table thead,
+      .criteria-table tbody,
+      .criteria-table th,
+      .criteria-table td,
+      .criteria-table tr {
+        display: block;
+      }
+
+      .criteria-table thead {
+        display: none;
+      }
+
+      .criteria-table tr {
+        border-bottom: 1px solid var(--line);
+        padding: 10px;
+      }
+
+      .criteria-table td {
+        border-bottom: none;
+        padding: 6px 0;
+      }
+
+      .no-col,
+      .score-col,
+      .comment-col,
+      .evidence-col {
+        width: auto;
+        text-align: left;
+      }
+    }
+
+    @media print {
+      @page {
+        size: A4;
+        margin: 12mm;
+      }
+
+      body {
+        background: white;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+        font-size: 11px;
+      }
+
+      .page {
+        max-width: none;
+        padding: 0;
+      }
+
+      .hero {
+        border-radius: 0;
+        padding: 14px;
+        margin-bottom: 10px;
+        box-shadow: none;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 180px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 15px;
+      }
+
+      h3 {
+        font-size: 13px;
+      }
+
+      .badge,
+      .actions,
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        box-shadow: none;
+        border: 1px solid #94a3b8;
+        border-radius: 8px;
+        padding: 10px;
+        margin-bottom: 8px;
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      .section-card {
+        break-inside: auto;
+        page-break-inside: auto;
+      }
+
+      .section-header {
+        padding-bottom: 6px;
+        margin-bottom: 6px;
+      }
+
+      input[type="text"],
+      input[type="date"],
+      textarea {
+        border: 1px solid #94a3b8;
+        border-radius: 4px;
+        padding: 5px;
+        font-size: 11px;
+      }
+
+      textarea {
+        min-height: 70px;
+      }
+
+      .criteria-comment {
+        min-height: 45px;
+        font-size: 10px;
+      }
+
+      .criteria-table th,
+      .criteria-table td {
+        padding: 5px;
+        font-size: 10px;
+      }
+
+      .score-col {
+        width: 155px;
+      }
+
+      .comment-col {
+        width: 180px;
+      }
+
+      .evidence-col {
+        width: 190px;
+      }
+
+      .score-option {
+        padding: 3px 2px;
+        border-radius: 4px;
+        font-size: 10px;
+      }
+
+      .score-caption {
+        display: none;
+      }
+
+      .checklist label,
+      .radio-list label {
+        padding: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+        font-size: 10px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6px;
+      }
+
+      .kpi {
+        padding: 7px;
+        border-radius: 6px;
+      }
+
+      .kpi .value {
+        font-size: 13px;
+      }
+
+      .signature-grid {
+        margin-top: 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page">
+    <section class="hero">
+      <div class="hero-grid">
+        <div>
+          <div class="badge">CTRM Assessment Digital Print Form</div>
+          <h1>FLEXTIVITY NFE: Supervisor Assessment & Evidence Kit</h1>
+          <p>Supervisor fills in the form digitally and prints the completed assessment for submission.</p>
+        </div>
+        <div class="summary-box">
+          <div class="muted" style="color:#dbeafe;">Completion</div>
+          <div class="big"><span id="completedScores">0</span>/<span id="totalItems">21</span></div>
+          <div class="muted" style="color:#dbeafe;">Weighted Score: <span id="weightedScoreHero">Pending</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Maklumat Calon & Penilaian</h2>
+      <p class="muted no-print">Isi maklumat asas sebelum melengkapkan skor penilaian.</p>
+      <div class="grid-5">
+        <div>
+          <label class="small">Nama Calon</label>
+          <input type="text" id="candidateName" placeholder="Nama Calon" />
+        </div>
+        <div>
+          <label class="small">No. Pekerja</label>
+          <input type="text" id="employeeNo" placeholder="No. Pekerja" />
+        </div>
+        <div>
+          <label class="small">Jabatan</label>
+          <input type="text" id="department" placeholder="Jabatan" />
+        </div>
+        <div>
+          <label class="small">Nama Penyelia</label>
+          <input type="text" id="supervisorName" placeholder="Nama Penyelia" />
+        </div>
+        <div>
+          <label class="small">Tarikh Penilaian</label>
+          <input type="date" id="assessmentDate" />
+        </div>
+      </div>
+    </section>
+
+    <div id="sectionsContainer"></div>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2>Senarai Semak Eviden</h2>
+        <p class="muted">Untuk kegunaan assessor.</p>
+        <div class="checklist" id="evidenceChecklist"></div>
+      </div>
+
+      <div class="card">
+        <h2>Rekomendasi</h2>
+        <p class="muted">Sila pilih satu keputusan penilaian.</p>
+        <div class="radio-list" id="recommendationList"></div>
+        <label class="small">Catatan Tambahan Penyelia / Assessor</label>
+        <textarea id="remarks" placeholder="Catatan tambahan"></textarea>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="section-header">
+        <div>
+          <h2>Assessment Summary</h2>
+          <p class="muted no-print">Semak ringkasan sebelum mencetak.</p>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="label">Candidate</div>
+          <div class="value" id="summaryCandidate">-</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Department</div>
+          <div class="value" id="summaryDepartment">-</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Completion</div>
+          <div class="value"><span id="summaryCompleted">0</span>/21 Criteria</div>
+        </div>
+        <div class="kpi">
+          <div class="label">Weighted Score</div>
+          <div class="value" id="summaryWeighted">Pending</div>
+        </div>
+      </div>
+
+      <div class="note no-print" id="completionNote">
+        Lengkapkan semua skor dalam Section 1, Section 2 dan Section 3 untuk mendapatkan markah berpemberat penuh.
+      </div>
+
+      <div class="signature-grid">
+        <div class="signature-line">Tandatangan Penyelia</div>
+        <div class="signature-line">Tarikh</div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div class="actions no-print">
+    <div class="actions-inner">
+      <button class="btn-secondary" onclick="saveDraft()">💾 Save Draft</button>
+      <button class="btn-secondary" onclick="loadDraft()">📂 Load Draft</button>
+      <button class="btn-danger" onclick="clearForm()">🗑 Clear Form</button>
+      <button class="btn-primary" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button class="btn-success" onclick="submitToDatabase()">✅ Submit to Database</button>
+    </div>
+  </div>
+
+  <script>
+    const scoreLabels = {
+      1: "Lemah",
+      2: "Memadai",
+      3: "Baik",
+      4: "Cemerlang"
+    };
+
+    const sections = [
+      {
+        id: "flextivity",
+        title: "SECTION 1: FLEXTIVITY",
+        weight: 40,
+        focus: "Versatility, Digital Readiness, and Adaptability.",
+        items: [
+          ["1", "Adaptasi Tugasan: Kebolehan bertukar skop kerja dengan cepat.", "Rekod Pertukaran Stesen / Task Log"],
+          ["2", "Fleksibiliti Masa: Kesediaan menyokong operasi luar waktu biasa.", "Rekod Kedatangan / OT / Shift Support"],
+          ["3", "Multi-tugas: Mengendalikan lebih dari satu stesen/mesin serentak.", "Skill Matrix / Laporan Output Multi-stesen"],
+          ["4", "Penyelesaian Masalah: Mencari jalan keluar kreatif bagi isu teknikal.", "Rekod Troubleshooting / Kaizen Form"],
+          ["5", "Kemahiran Bersilang: Membantu bahagian lain di luar kepakaran teras.", "Skill Matrix / Cross-training Record"],
+          ["6", "Keupayaan Digital: Penguasaan sistem ERP/Tablet/Aplikasi kerja.", "Log Sistem / Rekod Input Data Digital"],
+          ["7", "Reskilling/Upskilling: Aktif belajar kemahiran baru (OJT/Kursus).", "Sijil Kursus / OJT Sign-off Sheet"],
+          ["8", "Kesediaan Berubah: Sikap positif terhadap SOP atau teknologi baru.", "Catatan Coaching / Rekod Implementasi SOP"],
+          ["9", "Ketahanan (Resilience): Kekal produktif di bawah tekanan tinggi.", "Laporan Prestasi Peak Period"],
+          ["10", "Mobiliti Kerja: Kesediaan dihantar ke cawangan/lokasi projek lain.", "Rekod Outstation / Site Support"]
+        ]
+      },
+      {
+        id: "productivity",
+        title: "SECTION 2: PRODUCTIVITY (PQCDSM)",
+        weight: 40,
+        focus: "Operational Excellence and Kaizen Mindset.",
+        items: [
+          ["P", "Kuantiti & Kecekapan: Mencapai KPI output harian.", "Daily Production Report / KPI Dashboard"],
+          ["Q", "Kualiti Hasil: Kadar rework atau reject yang rendah.", "Rekod Reject / Quality Inspection Log"],
+          ["C", "Penjimatan Kos: Mengurangkan pembaziran bahan/utiliti.", "Kaizen (Cost Saving) / Scrap Record"],
+          ["D", "Pematuhan Masa: Menyiapkan tugasan mengikut Lead Time.", "Project Schedule / SLA Compliance Log"],
+          ["S", "Amalan Keselamatan: Mematuhi PPE dan prosedur HIRARC.", "Safety Audit / PPE Checklist / Zero Accident"],
+          ["M", "Semangat & Kaizen: Memberi cadangan penambahbaikan.", "Borang Kaizen / Sebelum-Selepas (B&A)"]
+        ]
+      },
+      {
+        id: "moral",
+        title: "SECTION 3: MORAL & PROFESIONALISME",
+        weight: 20,
+        focus: "Ethics, Discipline, and Teamwork.",
+        items: [
+          ["1", "Tingkah Laku Profesional: Menjaga imej syarikat & etika kerja.", "Supervisor Journal / Merit-Demerit"],
+          ["2", "Komunikasi Beretika: Cara berinteraksi dengan rakan & atasan.", "Peer Feedback / Minutes of Meeting"],
+          ["3", "Integriti: Kejujuran dalam pelaporan kerja & tugas.", "Rekod Audit Dalaman / Kepercayaan Tugas"],
+          ["4", "Disiplin/Kehadiran: Ketepatan masa dan kehadiran konsisten.", "Punch Card / Attendance Summary"],
+          ["5", "Pematuhan Budaya Kerja: Mengamalkan nilai 5S / Core Values.", "5S Audit Checklist / Performance Review"]
+        ]
+      }
+    ];
+
+    const evidenceChecklist = [
+      "Skill Matrix (Terkini)",
+      "Rekod Kehadiran (3 Bulan Terakhir)",
+      "Borang Kaizen atau Rekod Penambahbaikan (Jika ada)",
+      "Laporan Kualiti / Output (Individu)",
+      "Rekod Latihan / OJT Sign-off"
+    ];
+
+    const recommendations = [
+      "LAYAK: Calon menunjukkan kompetensi tinggi dan layak diiktiraf.",
+      "LAYAK DENGAN PEMANTAUAN: Calon layak tetapi memerlukan bimbingan dalam aspek tertentu.",
+      "LATIHAN TAMBAHAN: Calon belum mencapai tahap minimum, perlu latihan semula."
+    ];
+
+    const totalItems = sections.reduce((sum, section) => sum + section.items.length, 0);
+
+    function key(sectionId, index) {
+      return `${sectionId}-${index}`;
+    }
+
+    function renderSections() {
+      const container = document.getElementById("sectionsContainer");
+      container.innerHTML = sections.map(section => `
+        <section class="card section-card">
+          <div class="section-header">
+            <div>
+              <h2>${section.title}</h2>
+              <p class="muted">Focus: ${section.focus}</p>
+            </div>
+            <div class="weight">Pemberat: ${section.weight}%</div>
+          </div>
+          <table class="criteria-table">
+            <thead>
+              <tr>
+                <th class="no-col">#</th>
+                <th>Kriteria Penilaian</th>
+                <th class="score-col">Skor</th>
+                <th class="comment-col">Komen Penyelia</th>
+                <th class="evidence-col">Dokumen Bukti (Evidence)</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${section.items.map((item, index) => {
+        const itemKey = key(section.id, index);
+        return `
+                  <tr>
+                    <td class="no-col">${item[0]}</td>
+                    <td><strong>${item[1]}</strong></td>
+                    <td class="score-col">
+                      <div class="score-options" data-key="${itemKey}">
+                        ${[1, 2, 3, 4].map(score => `
+                          <label class="score-option" id="label-${itemKey}-${score}">
+                            <input type="radio" name="${itemKey}" value="${score}" onchange="selectScore('${itemKey}', ${score})" />
+                            ${score}
+                          </label>
+                        `).join("")}
+                      </div>
+                      <div class="score-caption" id="caption-${itemKey}">Belum dinilai</div>
+                    </td>
+                    <td class="comment-col">
+                      <textarea class="criteria-comment" id="comment-${itemKey}" placeholder="Komen ringkas penyelia" oninput="updateSummary()"></textarea>
+                    </td>
+                    <td class="evidence-col">${item[2]}</td>
+                  </tr>
+                `;
+      }).join("")}
+            </tbody>
+          </table>
+        </section>
+      `).join("");
+    }
+
+    function renderChecklist() {
+      const container = document.getElementById("evidenceChecklist");
+      container.innerHTML = evidenceChecklist.map((item, index) => `
+        <label>
+          <input type="checkbox" id="check-${index}" onchange="updateSummary()" />
+          <span>${item}</span>
+        </label>
+      `).join("");
+    }
+
+    function renderRecommendations() {
+      const container = document.getElementById("recommendationList");
+      container.innerHTML = recommendations.map((item, index) => `
+        <label id="recommendation-label-${index}">
+          <input type="radio" name="recommendation" value="${item}" onchange="selectRecommendation(${index})" />
+          <span>${item}</span>
+        </label>
+      `).join("");
+    }
+
+    function selectScore(itemKey, score) {
+      [1, 2, 3, 4].forEach(value => {
+        const label = document.getElementById(`label-${itemKey}-${value}`);
+        if (label) label.classList.toggle("selected", value === score);
+      });
+      const caption = document.getElementById(`caption-${itemKey}`);
+      if (caption) caption.textContent = scoreLabels[score];
+      updateSummary();
+    }
+
+    function selectRecommendation(index) {
+      recommendations.forEach((_, i) => {
+        const label = document.getElementById(`recommendation-label-${i}`);
+        if (label) label.classList.toggle("selected", i === index);
+      });
+    }
+
+    function getScore(itemKey) {
+      const selected = document.querySelector(`input[name="${itemKey}"]:checked`);
+      return selected ? Number(selected.value) : 0;
+    }
+
+    function calculateWeightedScore() {
+      let totalWeighted = 0;
+      let completedSections = 0;
+
+      sections.forEach(section => {
+        const sectionScores = section.items.map((_, index) => getScore(key(section.id, index))).filter(Boolean);
+        if (sectionScores.length === section.items.length) {
+          const average = sectionScores.reduce((a, b) => a + b, 0) / sectionScores.length;
+          totalWeighted += (average / 4) * section.weight;
+          completedSections += 1;
+        }
+      });
+
+      return {
+        score: Math.round(totalWeighted * 100) / 100,
+        completedSections,
+        ready: completedSections === sections.length
+      };
+    }
+
+    function updateSummary() {
+      const completed = sections.reduce((sum, section) => {
+        return sum + section.items.filter((_, index) => getScore(key(section.id, index))).length;
+      }, 0);
+
+      const weighted = calculateWeightedScore();
+
+      const candidateName = document.getElementById("candidateName").value || "-";
+      const department = document.getElementById("department").value || "-";
+
+      document.getElementById("completedScores").textContent = completed;
+      document.getElementById("summaryCompleted").textContent = completed;
+      document.getElementById("summaryCandidate").textContent = candidateName;
+      document.getElementById("summaryDepartment").textContent = department;
+
+      document.getElementById("weightedScoreHero").textContent = weighted.ready ? `${weighted.score}%` : "Pending";
+      document.getElementById("summaryWeighted").textContent = weighted.ready ? `${weighted.score}%` : "Pending";
+
+      document.getElementById("completionNote").style.display = weighted.ready ? "none" : "block";
+    }
+
+    function collectData() {
+      const scores = {};
+      sections.forEach(section => {
+        section.items.forEach((_, index) => {
+          const itemKey = key(section.id, index);
+          scores[itemKey] = getScore(itemKey);
+        });
+      });
+
+      const comments = {};
+      sections.forEach(section => {
+        section.items.forEach((_, index) => {
+          const itemKey = key(section.id, index);
+          const commentInput = document.getElementById(`comment-${itemKey}`);
+          comments[itemKey] = commentInput ? commentInput.value : "";
+        });
+      });
+
+      const checks = {};
+      evidenceChecklist.forEach((item, index) => {
+        checks[item] = document.getElementById(`check-${index}`).checked;
+      });
+
+      const selectedRecommendation = document.querySelector(`input[name="recommendation"]:checked`);
+
+      return {
+        candidateName: document.getElementById("candidateName").value,
+        employeeNo: document.getElementById("employeeNo").value,
+        department: document.getElementById("department").value,
+        supervisorName: document.getElementById("supervisorName").value,
+        assessmentDate: document.getElementById("assessmentDate").value,
+        scores,
+        comments,
+        evidenceChecklist: checks,
+        recommendation: selectedRecommendation ? selectedRecommendation.value : "",
+        remarks: document.getElementById("remarks").value
+      };
+    }
+
+    function applyData(data) {
+      if (!data) return;
+
+      document.getElementById("candidateName").value = data.candidateName || "";
+      document.getElementById("employeeNo").value = data.employeeNo || "";
+      document.getElementById("department").value = data.department || "";
+      document.getElementById("supervisorName").value = data.supervisorName || "";
+      document.getElementById("assessmentDate").value = data.assessmentDate || "";
+      document.getElementById("remarks").value = data.remarks || "";
+
+      if (data.scores) {
+        Object.entries(data.scores).forEach(([itemKey, score]) => {
+          if (score) {
+            const input = document.querySelector(`input[name="${itemKey}"][value="${score}"]`);
+            if (input) {
+              input.checked = true;
+              selectScore(itemKey, Number(score));
+            }
+          }
+        });
+      }
+
+      if (data.comments) {
+        Object.entries(data.comments).forEach(([itemKey, comment]) => {
+          const commentInput = document.getElementById(`comment-${itemKey}`);
+          if (commentInput) commentInput.value = comment || "";
+        });
+      }
+
+      if (data.evidenceChecklist) {
+        evidenceChecklist.forEach((item, index) => {
+          const input = document.getElementById(`check-${index}`);
+          if (input) input.checked = Boolean(data.evidenceChecklist[item]);
+        });
+      }
+
+      if (data.recommendation) {
+        const input = Array.from(document.querySelectorAll(`input[name="recommendation"]`))
+          .find(radio => radio.value === data.recommendation);
+        if (input) {
+          input.checked = true;
+          const index = recommendations.indexOf(data.recommendation);
+          selectRecommendation(index);
+        }
+      }
+
+      updateSummary();
+    }
+
+    function saveDraft() {
+      const data = collectData();
+      localStorage.setItem("ctrmSupervisorAssessmentDraft", JSON.stringify(data));
+      alert("Draft berjaya disimpan dalam browser ini.");
+    }
+
+    function loadDraft() {
+      const raw = localStorage.getItem("ctrmSupervisorAssessmentDraft");
+      if (!raw) {
+        alert("Tiada draft dijumpai dalam browser ini.");
+        return;
+      }
+
+      applyData(JSON.parse(raw));
+      alert("Draft berjaya dimuatkan.");
+    }
+
+    function clearForm() {
+      const confirmClear = confirm("Padam semua maklumat dalam borang ini?");
+      if (!confirmClear) return;
+      localStorage.removeItem("ctrmSupervisorAssessmentDraft");
+      window.location.reload();
+    }
+
+    // ─── SUPABASE CONFIG ──────────────────────────────────────────────────────
+    const SUPABASE_URL = "https://vwdlrwwwdfmcebycqsfv.supabase.co";
+    const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ3ZGxyd3d3ZGZtY2VieWNxc2Z2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY2OTI2MDIsImV4cCI6MjA5MjI2ODYwMn0.Ga0wgrDuWdW_rzK18V1bQspQHQDXeM-jAonLyIvYGvw";
+    // ─────────────────────────────────────────────────────────────────────────
+
+    function showToast(message, type = "success", duration = 4000) {
+      const toast = document.getElementById("toast");
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      toast.style.display = "block";
+      clearTimeout(toast._timer);
+      toast._timer = setTimeout(() => { toast.style.display = "none"; }, duration);
+    }
+
+    async function submitToDatabase() {
+      const candidateName = document.getElementById("candidateName").value.trim();
+      const employeeNo = document.getElementById("employeeNo").value.trim();
+      const department = document.getElementById("department").value.trim();
+      const supervisorName = document.getElementById("supervisorName").value.trim();
+      const assessmentDate = document.getElementById("assessmentDate").value.trim();
+
+      if (!candidateName || !employeeNo || !department || !supervisorName || !assessmentDate) {
+        showToast("⚠️ Sila lengkapkan semua maklumat calon sebelum menghantar.", "error", 5000);
+        return;
+      }
+
+      const weighted = calculateWeightedScore();
+      if (!weighted.ready) {
+        showToast("⚠️ Sila lengkapkan semua skor penilaian (Section 1, 2 & 3) sebelum menghantar.", "error", 5000);
+        return;
+      }
+
+      const selectedRecommendation = document.querySelector(`input[name="recommendation"]:checked`);
+      if (!selectedRecommendation) {
+        showToast("⚠️ Sila pilih Rekomendasi sebelum menghantar.", "error", 5000);
+        return;
+      }
+
+      showToast("⏳ Menghantar data ke pangkalan data...", "loading", 30000);
+
+      const data = collectData();
+
+      const payload = {
+        candidate_name: data.candidateName,
+        employee_no: data.employeeNo,
+        department: data.department,
+        supervisor_name: data.supervisorName,
+        assessment_date: data.assessmentDate,
+        weighted_score: weighted.score,
+        recommendation: data.recommendation,
+        remarks: data.remarks,
+        scores: data.scores,
+        evidence_checklist: data.evidenceChecklist
+      };
+
+      try {
+        const response = await fetch(`${SUPABASE_URL}/rest/v1/assessments`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_ANON_KEY,
+            "Authorization": `Bearer ${SUPABASE_ANON_KEY}`,
+            "Prefer": "return=minimal"
+          },
+          body: JSON.stringify(payload)
+        });
+
+        if (response.ok || response.status === 201) {
+          showToast("✅ Borang berjaya dihantar ke pangkalan data!", "success", 6000);
+          localStorage.removeItem("ctrmSupervisorAssessmentDraft");
+        } else {
+          const err = await response.json();
+          console.error("Supabase error:", err);
+          showToast("❌ Ralat: " + (err.message || "Gagal menghantar. Cuba semula."), "error", 6000);
+        }
+      } catch (err) {
+        console.error("Submit error:", err);
+        showToast("❌ Ralat sambungan. Semak internet dan cuba semula.", "error", 6000);
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("totalItems").textContent = totalItems;
+      renderSections();
+      renderChecklist();
+      renderRecommendations();
+
+      ["candidateName", "employeeNo", "department", "supervisorName", "assessmentDate", "remarks"]
+        .forEach(id => document.getElementById(id).addEventListener("input", updateSummary));
+
+      updateSummary();
+    });
+  </script>
+</body>
+
+</html>
