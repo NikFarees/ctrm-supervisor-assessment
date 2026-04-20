@@ -35,16 +35,21 @@ class ScoreManager {
       if (!label) return;
 
       label.classList.toggle("score-option--selected", v === score);
-      // Remove all colour modifier classes then apply the active one
       [1, 2, 3, 4].forEach((c) => label.classList.remove(`score-option--${c}`));
       if (v === score) label.classList.add(`score-option--${v}`);
     });
 
+    const scoreLabel = this._data.scoreLabels[score] ?? "Belum dinilai";
+
     const caption = document.getElementById(`caption-${itemKey}`);
     if (caption) {
-      caption.textContent = this._data.scoreLabels[score] ?? "Belum dinilai";
+      caption.textContent = scoreLabel;
       caption.className = `score-caption ${score ? `score-caption--${score}` : ""}`;
     }
+
+    // Update the print-only score badge
+    const printScore = document.getElementById(`print-score-${itemKey}`);
+    if (printScore) printScore.textContent = score ? `${score} — ${scoreLabel}` : "";
   }
 
   // ── computation ───────────────────────────────────────────────────────────

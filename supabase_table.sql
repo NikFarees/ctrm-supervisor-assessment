@@ -1,27 +1,28 @@
 -- ============================================================
 -- CTRM Supervisor Assessment — Supabase Table Definition
--- Run this in: Supabase Dashboard → SQL Editor → New Query
 --
--- DROP the old table first if it exists:
---   drop table if exists assessments;
--- Then run this script.
+-- Run this in: Supabase Dashboard → SQL Editor → New Query
+-- Step 1: drop old table (if it exists)
+-- Step 2: run this script
 -- ============================================================
+
+drop table if exists assessments;
 
 create table assessments (
 
-  -- ── System columns (auto-filled, do not send from app) ────
+  -- ── System (auto-filled) ────────────────────────────────────
   id            uuid        primary key default gen_random_uuid(),
   submitted_at  timestamptz not null    default now(),
 
-  -- ── Candidate Info ─────────────────────────────────────────
+  -- ── Candidate Info ──────────────────────────────────────────
   candidate_name   text not null,
   employee_no      text not null,
   department       text not null,
   supervisor_name  text not null,
   assessment_date  date not null,
 
-  -- ── SECTION 1: FLEXTIVITY ──────────────────────────────────
-  -- Score: 1 = Lemah | 2 = Memadai | 3 = Baik | 4 = Cemerlang
+  -- ── SECTION 1: FLEXTIVITY (weight 40%) ─────────────────────
+  -- Score: 1=Lemah  2=Memadai  3=Baik  4=Cemerlang
   f01_adaptasi_tugasan_score        smallint check (f01_adaptasi_tugasan_score        between 1 and 4),
   f01_adaptasi_tugasan_comment      text,
 
@@ -52,7 +53,7 @@ create table assessments (
   f10_mobiliti_kerja_score          smallint check (f10_mobiliti_kerja_score          between 1 and 4),
   f10_mobiliti_kerja_comment        text,
 
-  -- ── SECTION 2: PRODUCTIVITY (PQCDSM) ──────────────────────
+  -- ── SECTION 2: PRODUCTIVITY PQCDSM (weight 40%) ────────────
   p_kuantiti_kecekapan_score        smallint check (p_kuantiti_kecekapan_score        between 1 and 4),
   p_kuantiti_kecekapan_comment      text,
 
@@ -71,7 +72,7 @@ create table assessments (
   m_semangat_kaizen_score           smallint check (m_semangat_kaizen_score           between 1 and 4),
   m_semangat_kaizen_comment         text,
 
-  -- ── SECTION 3: MORAL & PROFESIONALISME ────────────────────
+  -- ── SECTION 3: MORAL & PROFESIONALISME (weight 20%) ────────
   mo1_tingkah_laku_profesional_score    smallint check (mo1_tingkah_laku_profesional_score    between 1 and 4),
   mo1_tingkah_laku_profesional_comment  text,
 
@@ -87,31 +88,23 @@ create table assessments (
   mo5_pematuhan_budaya_kerja_score      smallint check (mo5_pematuhan_budaya_kerja_score      between 1 and 4),
   mo5_pematuhan_budaya_kerja_comment    text,
 
-  -- ── Evidence Checklist ─────────────────────────────────────
-  -- true = document was submitted, false = not submitted
-  ev_skill_matrix       boolean not null default false,
-  ev_rekod_kehadiran    boolean not null default false,
-  ev_borang_kaizen      boolean not null default false,
-  ev_laporan_kualiti    boolean not null default false,
-  ev_rekod_latihan      boolean not null default false,
-
-  -- ── Result ─────────────────────────────────────────────────
+  -- ── Result ──────────────────────────────────────────────────
   weighted_score  numeric(5, 2),   -- e.g. 87.50
   recommendation  text,
   remarks         text
 
 );
 
--- ── Row-Level Security (recommended) ───────────────────────
+-- ── Row-Level Security ──────────────────────────────────────
 alter table assessments enable row level security;
 
--- Allow the app's anon key to insert rows:
+-- App (anon key) can insert
 create policy "Allow anon insert"
   on assessments for insert
   to anon
   with check (true);
 
--- Allow authenticated users (e.g. admin) to read all rows:
+-- Admin (authenticated) can read all rows
 create policy "Allow authenticated read"
   on assessments for select
   to authenticated

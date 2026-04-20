@@ -9,24 +9,65 @@
 </head>
 
 <body>
+
+  <!-- ══════════════════════════════════════════════════════════
+       PRINT HEADER — only visible when printing
+  ═══════════════════════════════════════════════════════════ -->
+  <div class="print-header">
+    <div class="print-header__top">
+      <div class="print-header__logo">FLEXTIVITY NFE</div>
+      <div class="print-header__title">
+        <div class="print-header__form-name">CTRM Supervisor Assessment</div>
+        <div class="print-header__sub">Borang Penilaian Prestasi Pekerja</div>
+      </div>
+      <div class="print-header__date-box">
+        <div class="print-header__date-label">Tarikh Cetak</div>
+        <div class="print-header__date-value" id="printDate"></div>
+      </div>
+    </div>
+    <div class="print-candidate-bar">
+      <div class="print-candidate-field">
+        <span class="print-candidate-field__label">Nama Calon</span>
+        <span class="print-candidate-field__value" id="printCandidateName">—</span>
+      </div>
+      <div class="print-candidate-field">
+        <span class="print-candidate-field__label">No. Pekerja</span>
+        <span class="print-candidate-field__value" id="printEmployeeNo">—</span>
+      </div>
+      <div class="print-candidate-field">
+        <span class="print-candidate-field__label">Jabatan</span>
+        <span class="print-candidate-field__value" id="printDepartment">—</span>
+      </div>
+      <div class="print-candidate-field">
+        <span class="print-candidate-field__label">Nama Penyelia</span>
+        <span class="print-candidate-field__value" id="printSupervisorName">—</span>
+      </div>
+      <div class="print-candidate-field">
+        <span class="print-candidate-field__label">Tarikh Penilaian</span>
+        <span class="print-candidate-field__value" id="printAssessmentDate">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════
+       SCREEN LAYOUT
+  ═══════════════════════════════════════════════════════════ -->
   <div class="page">
 
-    <!-- ── Hero ─────────────────────────────────────────────── -->
-    <section class="hero">
+    <!-- Hero -->
+    <section class="hero no-print">
       <div class="hero-grid">
         <div>
           <div class="badge">CTRM Assessment Digital Print Form</div>
           <h1>FLEXTIVITY NFE: Supervisor Assessment &amp; Evidence Kit</h1>
           <p>Supervisor fills in the form digitally and prints the completed assessment for submission.</p>
-
-          <div class="progress-wrap no-print">
+          <div class="progress-wrap">
             <div class="progress-label" id="progressPct">0%</div>
             <div class="progress-track">
               <div class="progress-bar" id="progressBar"></div>
             </div>
           </div>
         </div>
-
         <div class="summary-box">
           <div class="summary-box__label">Completion</div>
           <div class="summary-box__big">
@@ -39,10 +80,10 @@
       </div>
     </section>
 
-    <!-- ── Candidate Info ────────────────────────────────────── -->
-    <section class="card">
+    <!-- Candidate Info (screen only — print version is in print-header) -->
+    <section class="card no-print">
       <h2>Maklumat Calon &amp; Penilaian</h2>
-      <p class="muted no-print">Isi maklumat asas sebelum melengkapkan skor penilaian.</p>
+      <p class="muted">Isi maklumat asas sebelum melengkapkan skor penilaian.</p>
       <div class="grid-5 info-grid">
         <div>
           <label class="small" for="candidateName">Nama Calon</label>
@@ -67,33 +108,23 @@
       </div>
     </section>
 
-    <!-- ── Assessment Sections (rendered by UIRenderer) ─────── -->
+    <!-- Assessment Sections (rendered by UIRenderer) -->
     <div id="sectionsContainer"></div>
 
-    <!-- ── Evidence Checklist + Recommendation ──────────────── -->
-    <section class="grid-2">
-      <div class="card">
-        <h2>Senarai Semak Eviden</h2>
-        <p class="muted">Untuk kegunaan assessor.</p>
-        <div class="checklist" id="evidenceChecklist"></div>
-      </div>
-
-      <div class="card">
-        <h2>Rekomendasi</h2>
-        <p class="muted">Sila pilih satu keputusan penilaian.</p>
-        <div class="radio-list" id="recommendationList"></div>
-        <label class="small remarks-label" for="remarks">
-          Catatan Tambahan Penyelia / Assessor
-        </label>
-        <textarea id="remarks" placeholder="Catatan tambahan"></textarea>
-      </div>
+    <!-- Recommendation -->
+    <section class="card">
+      <h2>Rekomendasi</h2>
+      <p class="muted no-print">Sila pilih satu keputusan penilaian.</p>
+      <div class="radio-list" id="recommendationList"></div>
+      <label class="small remarks-label" for="remarks">Catatan Tambahan Penyelia / Assessor</label>
+      <textarea id="remarks" placeholder="Catatan tambahan (tidak wajib)"></textarea>
     </section>
 
-    <!-- ── Assessment Summary ────────────────────────────────── -->
+    <!-- Assessment Summary -->
     <section class="card">
       <div class="section-header">
         <div>
-          <h2>Assessment Summary</h2>
+          <h2>Ringkasan Penilaian</h2>
           <p class="muted no-print">Semak ringkasan sebelum mencetak.</p>
         </div>
       </div>
@@ -121,18 +152,37 @@
         ⚠️ Lengkapkan semua skor dalam Section 1, Section 2 dan Section 3 untuk mendapatkan markah berpemberat penuh.
       </div>
 
+      <!-- Print signature block -->
       <div class="signature-grid">
-        <div class="signature-line">Tandatangan Penyelia</div>
-        <div class="signature-line">Tarikh</div>
+        <div>
+          <div class="signature-line"></div>
+          <div class="signature-label">Tandatangan Penyelia</div>
+          <div class="signature-name" id="printSupervisorSig"></div>
+        </div>
+        <div>
+          <div class="signature-line"></div>
+          <div class="signature-label">Tandatangan Calon</div>
+          <div class="signature-name"></div>
+        </div>
+        <div>
+          <div class="signature-line"></div>
+          <div class="signature-label">Disahkan Oleh (HR/Pengurus)</div>
+          <div class="signature-name"></div>
+        </div>
+        <div>
+          <div class="signature-line"></div>
+          <div class="signature-label">Tarikh</div>
+          <div class="signature-name" id="printSigDate"></div>
+        </div>
       </div>
     </section>
 
   </div><!-- /.page -->
 
-  <!-- ── Toast ────────────────────────────────────────────────── -->
+  <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
-  <!-- ── Sticky Action Bar ────────────────────────────────────── -->
+  <!-- Sticky Action Bar -->
   <div class="actions no-print">
     <div class="actions-inner">
       <button type="button" class="btn-secondary" onclick="app.saveDraft()">💾 Save Draft</button>
@@ -143,7 +193,7 @@
     </div>
   </div>
 
-  <!-- ── Scripts (load order matters) ──────────────────────── -->
+  <!-- Scripts -->
   <script src="js/config.js"></script>
   <script src="js/data.js"></script>
   <script src="js/Toast.js"></script>
@@ -153,6 +203,40 @@
   <script src="js/SupabaseService.js"></script>
   <script src="js/AssessmentForm.js"></script>
   <script src="js/app.js"></script>
-</body>
 
+  <!-- Print data sync — keeps the print header in sync with form fields -->
+  <script>
+    function syncPrintHeader() {
+      const map = {
+        candidateName:  ["printCandidateName",  "printSupervisorSig"],
+        employeeNo:     ["printEmployeeNo"],
+        department:     ["printDepartment"],
+        supervisorName: ["printSupervisorName"],
+        assessmentDate: ["printAssessmentDate"],
+      };
+      ["candidateName","employeeNo","department","supervisorName","assessmentDate"].forEach(id => {
+        const val = document.getElementById(id)?.value || "—";
+        (map[id] || []).forEach(printId => {
+          const el = document.getElementById(printId);
+          if (el) el.textContent = val;
+        });
+      });
+      // Supervisor sig
+      const supEl = document.getElementById("printSupervisorSig");
+      if (supEl) supEl.textContent = document.getElementById("supervisorName")?.value || "";
+      // Print date
+      const pd = document.getElementById("printDate");
+      if (pd) pd.textContent = new Date().toLocaleDateString("ms-MY", {day:"2-digit",month:"long",year:"numeric"});
+      const sd = document.getElementById("printSigDate");
+      if (sd) sd.textContent = document.getElementById("assessmentDate")?.value || "";
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      syncPrintHeader();
+      ["candidateName","employeeNo","department","supervisorName","assessmentDate"]
+        .forEach(id => document.getElementById(id)?.addEventListener("input", syncPrintHeader));
+    });
+  </script>
+
+</body>
 </html>

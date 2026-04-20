@@ -1,45 +1,20 @@
 /**
  * UIRenderer — builds and inserts all dynamic HTML fragments.
- *
- * This class owns every innerHTML write so that the rest of the codebase
- * stays free of template strings and direct DOM manipulation.
  */
 class UIRenderer {
-  /**
-   * @param {object} data         AssessmentData
-   * @param {ScoreManager} score  ScoreManager instance
-   */
   constructor(data, scoreManager) {
-    this._data = data;
+    this._data  = data;
     this._score = scoreManager;
   }
 
   // ── Public render methods ─────────────────────────────────────────────────
 
-  /** Render all assessment section cards into #sectionsContainer. */
   renderSections() {
     const container = document.getElementById("sectionsContainer");
     if (!container) return;
     container.innerHTML = this._data.sections.map((s) => this._sectionHTML(s)).join("");
   }
 
-  /** Render evidence checklist into #evidenceChecklist. */
-  renderChecklist() {
-    const container = document.getElementById("evidenceChecklist");
-    if (!container) return;
-    container.innerHTML = this._data.evidenceChecklist
-      .map(
-        ([label, colKey], i) => `
-        <label class="checklist__item">
-          <input type="checkbox" id="check-${i}" data-col="${colKey}" class="checklist__checkbox" />
-          <span class="checklist__check-icon"></span>
-          <span>${label}</span>
-        </label>`
-      )
-      .join("");
-  }
-
-  /** Render recommendation radio list into #recommendationList. */
   renderRecommendations() {
     const container = document.getElementById("recommendationList");
     if (!container) return;
@@ -55,11 +30,6 @@ class UIRenderer {
       .join("");
   }
 
-  /**
-   * Refresh all summary display elements (hero + summary card + progress bar).
-   * @param {{ completed: number, total: number, weighted: object,
-   *           candidateName: string, department: string }} summaryData
-   */
   updateSummary({ completed, total, weighted, candidateName, department }) {
     const pct = total > 0 ? Math.round((completed / total) * 100) : 0;
 
@@ -72,7 +42,6 @@ class UIRenderer {
     this._setText("weightedScoreHero", scoreText);
     this._setText("summaryWeighted", scoreText);
 
-    // Colour the weighted score display based on value
     const summaryWeightedEl = document.getElementById("summaryWeighted");
     if (summaryWeightedEl) {
       summaryWeightedEl.className =
@@ -86,19 +55,16 @@ class UIRenderer {
           : "");
     }
 
-    // Progress bar
     const bar = document.getElementById("progressBar");
     if (bar) bar.style.width = `${pct}%`;
 
     const pctLabel = document.getElementById("progressPct");
     if (pctLabel) pctLabel.textContent = `${pct}%`;
 
-    // Completion note
     const note = document.getElementById("completionNote");
     if (note) note.style.display = weighted.ready ? "none" : "block";
   }
 
-  /** Highlight selected recommendation row. */
   selectRecommendation(index) {
     this._data.recommendations.forEach((_, i) => {
       const el = document.getElementById(`recommendation-label-${i}`);
@@ -128,8 +94,8 @@ class UIRenderer {
                 <th class="col-no">#</th>
                 <th>Kriteria Penilaian</th>
                 <th class="col-score">Skor</th>
-                <th class="col-comment">Komen Penyelia</th>
-                <th class="col-evidence">Dokumen Bukti (Evidence)</th>
+                <th class="col-comment">Komen &amp; Catatan Penyelia</th>
+                <th class="col-evidence">Dokumen Bukti</th>
               </tr>
             </thead>
             <tbody>
@@ -147,29 +113,35 @@ class UIRenderer {
         <td class="col-no"><span class="row-no">${item[0]}</span></td>
         <td><strong>${item[1]}</strong></td>
         <td class="col-score">
-          <div class="score-options" role="radiogroup" aria-label="Skor untuk kriteria ${item[0]}">
-            ${[1, 2, 3, 4]
-              .map(
-                (score) => `
+          <div class="score-options" role="radiogroup">
+            ${[1, 2, 3, 4].map((score) => `
               <label class="score-option score-option--${score}" id="label-${itemKey}-${score}" title="${this._data.scoreLabels[score]}">
                 <input type="radio" name="${itemKey}" value="${score}"
                   onchange="app.onScoreChange('${itemKey}', ${score})" />
                 <span class="score-option__num">${score}</span>
-              </label>`
-              )
-              .join("")}
+              </label>`).join("")}
           </div>
           <div class="score-caption" id="caption-${itemKey}">Belum dinilai</div>
+          <div class="score-print" id="print-score-${itemKey}"></div>
         </td>
         <td class="col-comment">
           <textarea class="criteria-comment" id="comment-${itemKey}"
-            placeholder="Komen ringkas penyelia"
+            placeholder="Komen ringkas penyelia (tidak wajib)"
             oninput="app.onFieldChange()"></textarea>
         </td>
         <td class="col-evidence">
           <span class="evidence-tag">${item[2]}</span>
         </td>
       </tr>`;
+  }
+
+  /**
+   * Called whenever a score changes — updates the print-only score badge
+   * so the printed page shows the selected score label clearly.
+   */
+  updatePrintScore(itemKey, score, label) {
+    const el = document.getElementById(`print-score-${itemKey}`);
+    if (el) el.textContent = score ? `${score} — ${label}` : "";
   }
 
   _setText(id, text) {

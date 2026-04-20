@@ -70,15 +70,6 @@ const AssessmentData = Object.freeze({
     },
   ],
 
-  // Each item: [label, columnKey]
-  evidenceChecklist: [
-    ["Skill Matrix (Terkini)",                            "ev_skill_matrix"],
-    ["Rekod Kehadiran (3 Bulan Terakhir)",                "ev_rekod_kehadiran"],
-    ["Borang Kaizen atau Rekod Penambahbaikan (Jika ada)","ev_borang_kaizen"],
-    ["Laporan Kualiti / Output (Individu)",               "ev_laporan_kualiti"],
-    ["Rekod Latihan / OJT Sign-off",                      "ev_rekod_latihan"],
-  ],
-
   recommendations: [
     "LAYAK: Calon menunjukkan kompetensi tinggi dan layak diiktiraf.",
     "LAYAK DENGAN PEMANTAUAN: Calon layak tetapi memerlukan bimbingan dalam aspek tertentu.",
