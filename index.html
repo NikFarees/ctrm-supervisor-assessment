@@ -86,23 +86,23 @@
       <p class="muted">Isi maklumat asas sebelum melengkapkan skor penilaian.</p>
       <div class="grid-5 info-grid">
         <div>
-          <label class="small" for="candidateName">Nama Calon</label>
+          <label class="small" for="candidateName">Nama Calon<span class="req">*</span></label>
           <input type="text" id="candidateName" placeholder="Nama Calon" />
         </div>
         <div>
-          <label class="small" for="employeeNo">No. Pekerja</label>
+          <label class="small" for="employeeNo">No. Pekerja<span class="req">*</span></label>
           <input type="text" id="employeeNo" placeholder="No. Pekerja" />
         </div>
         <div>
-          <label class="small" for="department">Jabatan</label>
+          <label class="small" for="department">Jabatan<span class="req">*</span></label>
           <input type="text" id="department" placeholder="Jabatan" />
         </div>
         <div>
-          <label class="small" for="supervisorName">Nama Penyelia</label>
+          <label class="small" for="supervisorName">Nama Penyelia<span class="req">*</span></label>
           <input type="text" id="supervisorName" placeholder="Nama Penyelia" />
         </div>
         <div>
-          <label class="small" for="assessmentDate">Tarikh Penilaian</label>
+          <label class="small" for="assessmentDate">Tarikh Penilaian<span class="req">*</span></label>
           <input type="date" id="assessmentDate" />
         </div>
       </div>
@@ -120,7 +120,7 @@
       </div>
 
       <div class="card">
-        <h2>Rekomendasi</h2>
+        <h2>Rekomendasi<span class="req">*</span></h2>
         <p class="muted no-print">Sila pilih satu keputusan penilaian.</p>
         <div class="radio-list" id="recommendationList"></div>
         <label class="small remarks-label" for="remarks">Catatan Tambahan Penyelia / Assessor</label>
@@ -129,7 +129,7 @@
     </div>
 
     <!-- Assessment Summary -->
-    <section class="card">
+    <section class="card summary-card">
       <div class="section-header">
         <div>
           <h2>Ringkasan Penilaian</h2>
@@ -170,7 +170,7 @@
         <div>
           <div class="signature-line"></div>
           <div class="signature-label">Tandatangan Calon</div>
-          <div class="signature-name"></div>
+          <div class="signature-name" id="printCandidateSig"></div>
         </div>
         <div>
           <div class="signature-line"></div>
@@ -195,9 +195,9 @@
     <div class="actions-inner">
       <button type="button" class="btn-secondary" onclick="app.saveDraft()">💾 Save Draft</button>
       <button type="button" class="btn-secondary" onclick="app.loadDraft()">📂 Load Draft</button>
-      <button type="button" class="btn-danger"    onclick="app.clearForm()">🗑 Clear Form</button>
-      <button type="button" class="btn-primary"   onclick="window.print()">🖨 Print / Save as PDF</button>
-      <button type="button" class="btn-success"   onclick="app.submitToDatabase()">✅ Submit to Database</button>
+      <button type="button" class="btn-danger" onclick="app.clearForm()">🗑 Clear Form</button>
+      <button type="button" class="btn-primary" onclick="window.print()">🖨 Print / Save as PDF</button>
+      <button type="button" class="btn-success" onclick="app.submitToDatabase()">✅ Submit to Database</button>
     </div>
   </div>
 
@@ -216,13 +216,13 @@
   <script>
     function syncPrintHeader() {
       const map = {
-        candidateName:  ["printCandidateName",  "printSupervisorSig"],
-        employeeNo:     ["printEmployeeNo"],
-        department:     ["printDepartment"],
+        candidateName: ["printCandidateName", "printCandidateSig"],
+        employeeNo: ["printEmployeeNo"],
+        department: ["printDepartment"],
         supervisorName: ["printSupervisorName"],
         assessmentDate: ["printAssessmentDate"],
       };
-      ["candidateName","employeeNo","department","supervisorName","assessmentDate"].forEach(id => {
+      ["candidateName", "employeeNo", "department", "supervisorName", "assessmentDate"].forEach(id => {
         const val = document.getElementById(id)?.value || "—";
         (map[id] || []).forEach(printId => {
           const el = document.getElementById(printId);
@@ -234,17 +234,18 @@
       if (supEl) supEl.textContent = document.getElementById("supervisorName")?.value || "";
       // Print date
       const pd = document.getElementById("printDate");
-      if (pd) pd.textContent = new Date().toLocaleDateString("ms-MY", {day:"2-digit",month:"long",year:"numeric"});
+      if (pd) pd.textContent = new Date().toLocaleDateString("ms-MY", { day: "2-digit", month: "long", year: "numeric" });
       const sd = document.getElementById("printSigDate");
       if (sd) sd.textContent = document.getElementById("assessmentDate")?.value || "";
     }
 
     document.addEventListener("DOMContentLoaded", () => {
       syncPrintHeader();
-      ["candidateName","employeeNo","department","supervisorName","assessmentDate"]
+      ["candidateName", "employeeNo", "department", "supervisorName", "assessmentDate"]
         .forEach(id => document.getElementById(id)?.addEventListener("input", syncPrintHeader));
     });
   </script>
 
 </body>
+
 </html>

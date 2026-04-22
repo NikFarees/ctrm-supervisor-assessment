@@ -37,7 +37,7 @@ class UIRenderer {
       .map(
         (item, i) => `
         <label class="radio-list__item" id="recommendation-label-${i}">
-          <input type="radio" name="recommendation" value="${item}" />
+          <input type="radio" name="recommendation" value="${item}" required />
           <span class="radio-list__dot"></span>
           <span>${item}</span>
         </label>`
@@ -106,7 +106,7 @@ class UIRenderer {
               <tr>
                 <th class="col-no">#</th>
                 <th>Kriteria Penilaian</th>
-                <th class="col-score">Skor</th>
+                <th class="col-score">Skor<span class="req">*</span></th>
                 <th class="col-comment">Komen &amp; Catatan Penyelia</th>
               </tr>
             </thead>
